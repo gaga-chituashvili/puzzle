@@ -70,6 +70,7 @@ export default function PuzzleGrid() {
   const [completed, setCompleted] = useState(false);
   const [droppedId, setDroppedId] = useState(null);
   const [image, setImage] = useState(null);
+  const [showImage, setShowImage] = useState(false);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -84,6 +85,7 @@ export default function PuzzleGrid() {
     setTiles(shuffle(initialTiles));
     setSeconds(0);
     setCompleted(false);
+    setShowImage(false); // hide image on shuffle
   };
 
   useEffect(() => {
@@ -104,7 +106,6 @@ export default function PuzzleGrid() {
 
     if (active.id !== over.id) {
       setDroppedId(active.id);
-
       const oldIndex = tiles.findIndex((t) => t.id === active.id);
       const newIndex = tiles.findIndex((t) => t.id === over.id);
 
@@ -114,7 +115,6 @@ export default function PuzzleGrid() {
       newTiles[newIndex] = temp;
 
       setTiles(newTiles);
-
       setTimeout(() => setDroppedId(null), 300);
     }
   };
@@ -125,14 +125,13 @@ export default function PuzzleGrid() {
         Puzzle Game
       </h2>
 
-      {/* Upload Box */}
       <div className="mb-6 flex flex-col items-center">
         <label
           htmlFor="fileUpload"
           className="cursor-pointer bg-[#151515]/50 border border-[#2a2a2a] 
-           hover:border-[#e59874] hover:bg-[#1f1f1f] transition-all
-           text-[#e8e8e8] px-8 py-4 rounded-xl text-lg font-semibold
-           flex items-center gap-3 shadow-lg backdrop-blur-md"
+         hover:border-[#e59874] hover:bg-[#1f1f1f] transition-all
+         text-[#e8e8e8] px-8 py-4 rounded-xl text-lg font-semibold
+         flex items-center gap-3 shadow-lg backdrop-blur-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -167,13 +166,23 @@ export default function PuzzleGrid() {
           </p>
         )}
       </div>
+
       {image && (
-        <button
-          onClick={restartPuzzle}
-          className="px-6 py-2 bg-[#e59874] text-black rounded-xl mb-6 font-bold hover:bg-[#f5b18e] transition"
-        >
-          Shuffle Again
-        </button>
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setShowImage((prev) => !prev)}
+            className="px-6 py-2 bg-[#e59874] text-black rounded-xl font-bold hover:bg-[#f5b18e] transition"
+          >
+            {showImage ? "Hide Image" : "Show Image"}
+          </button>
+
+          <button
+            onClick={restartPuzzle}
+            className="px-6 py-2 bg-[#e59874] text-black rounded-xl font-bold hover:bg-[#f5b18e] transition"
+          >
+            Shuffle Again
+          </button>
+        </div>
       )}
 
       {image && completed && (
@@ -183,7 +192,11 @@ export default function PuzzleGrid() {
       )}
 
       {image && (
-        <div className="flex flex-col lg:flex-row items-center gap-20">
+        <div
+          className={`flex flex-col lg:flex-row items-center gap-20 transition-all duration-500 ${
+            showImage ? "lg:ml-10" : "lg:ml-0"
+          }`}
+        >
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -208,13 +221,15 @@ export default function PuzzleGrid() {
             </SortableContext>
           </DndContext>
 
-          <div className="w-[450px] h-[450px] overflow-hidden rounded-2xl border border-[#1f1f1f]">
-            <img
-              src={image}
-              alt="Puzzle"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          {showImage && (
+            <div className="w-[450px] h-[450px] overflow-hidden rounded-2xl border border-[#1f1f1f] shadow-lg">
+              <img
+                src={image}
+                alt="Puzzle Preview"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
         </div>
       )}
 
