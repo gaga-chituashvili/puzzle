@@ -17,7 +17,7 @@ The project is currently **under active development** and represents a real-worl
 ---
 
 ## 📁 Project Structure
-
+```
 ├── README.md                     # Project documentation
 ├── build/                        # Production-ready build output (generated via `npm run build`)
 │   ├── index.html                # Main HTML file for production
@@ -46,3 +46,4 @@ The project is currently **under active development** and represents a real-worl
 ├── package.json                  # Project metadata and dependencies
 ├── package-lock.json             # Locked dependency versions
 └── tailwind.config.js            # Tailwind CSS configuration
+```
