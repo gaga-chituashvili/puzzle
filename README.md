@@ -47,3 +47,23 @@ The project is currently **under active development** and represents a real-worl
 ├── package-lock.json             # Locked dependency versions
 └── tailwind.config.js            # Tailwind CSS configuration
 ```
+
+## Tech Stack
+
+### Frontend
+
+- React  
+- React DOM  
+- React Router DOM  
+- DnD Kit (Drag and Drop)  
+- TailwindCSS  
+
+### Testing
+
+- Testing Library (React, DOM, User Event)  
+- Jest DOM  
+
+### Performance
+
+- Web Vitals  
+
