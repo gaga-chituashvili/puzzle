@@ -18,6 +18,7 @@ The project is currently **under active development** and represents a real-worl
 
 ## 📁 Project Structure
 ```
+puzzle/
 ├── README.md                     # Project documentation
 ├── build/                        # Production-ready build output (generated via `npm run build`)
 │   ├── index.html                # Main HTML file for production
@@ -35,13 +36,36 @@ The project is currently **under active development** and represents a real-worl
 │   └── puzzle.svg                # Application icon / asset
 │
 ├── src/                          # Application source code
-│   ├── App.js                    # Root React component
-│   ├── App.css                  # Global application styles
-│   ├── index.js                  # Application entry point
-│   ├── reset.css                 # CSS reset for consistent styling
-│   ├── Home.jsx                  # Main page component
-│   └── component/
-│       └── PuzzleGrid.jsx        # Core puzzle grid logic and UI
+│   ├── index.js                  # Application entry point — renders <App /> into DOM
+│   │
+│   ├── app/                      # App-level shell (root component, global setup)
+│   │   ├── App.jsx               # Root React component — composes the app layout
+│   │   └── App.css               # Global application styles
+│   │
+│   ├── pages/                    # Route-level page components
+│   │   └── Home.jsx              # Main page — renders the puzzle feature
+│   │
+│   ├── features/                 # Domain-driven feature modules
+│   │   └── puzzle/                # Everything related to the puzzle game, self-contained
+│   │       ├── index.js           # Barrel export — public entry point of the feature
+│   │       │
+│   │       ├── components/        # Presentational (UI-only) components
+│   │       │   ├── PuzzleGrid.jsx     # Composes the puzzle UI, consumes usePuzzleGame
+│   │       │   ├── Tile.jsx           # Single draggable puzzle tile
+│   │       │   ├── ImageUploader.jsx  # Upload button + empty-state prompt
+│   │       │   └── PuzzleControls.jsx # Show Image / Shuffle Again buttons
+│   │       │
+│   │       ├── hooks/             # Feature-specific state & business logic
+│   │       │   └── usePuzzleGame.js   # Tiles, timer, drag handling, win detection
+│   │       │
+│   │       ├── constants/         # Static feature-scoped data
+│   │       │   └── positions.js       # Grid background-position values for tiles
+│   │       │
+│   │       └── utils/             # Pure helper functions
+│   │           └── shuffle.js         # Fisher-Yates-style array shuffle
+│   │
+│   └── styles/                   # Global, non-component-specific styles
+│       └── reset.css             # CSS reset for consistent cross-browser styling
 │
 ├── package.json                  # Project metadata and dependencies
 ├── package-lock.json             # Locked dependency versions
